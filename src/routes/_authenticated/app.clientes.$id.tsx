@@ -117,7 +117,7 @@ function ClienteDetail() {
               );
               const { error } = await supabase.from("clientes").update(payload as never).eq("id", id);
               setSaving(false);
-              if (error) return toast.error("Erro ao salvar", { description: error.message });
+              if (error) { toast.error("Erro ao salvar", { description: error.message }); return; }
               toast.success("Cliente atualizado");
               setEditing(false);
               qc.invalidateQueries({ queryKey: ["cliente", id] });
