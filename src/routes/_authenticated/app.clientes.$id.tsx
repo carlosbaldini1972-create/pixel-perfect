@@ -61,7 +61,7 @@ function ClienteDetail() {
   async function deleteCliente() {
     if (!confirm("Excluir este cliente? Esta ação não pode ser desfeita.")) return;
     const { error } = await supabase.from("clientes").delete().eq("id", id);
-    if (error) return toast.error("Erro ao excluir", { description: error.message });
+    if (error) { toast.error("Erro ao excluir", { description: error.message }); return; }
     toast.success("Cliente excluído");
     nav({ to: "/app/clientes" });
   }
@@ -191,7 +191,7 @@ function ContatosSection({
   async function add(e: FormEvent) {
     e.preventDefault();
     const { error } = await supabase.from("contatos").insert({ cliente_id: clienteId, ...form } as never);
-    if (error) return toast.error("Erro ao adicionar contato", { description: error.message });
+    if (error) { toast.error("Erro ao adicionar contato", { description: error.message }); return; }
     toast.success("Contato adicionado");
     setForm({ nome: "", cargo: "", email: "", telefone: "", whatsapp: "", tipo: "comercial", acesso_portal: false });
     setOpen(false);
@@ -201,7 +201,7 @@ function ContatosSection({
   async function remove(id: string) {
     if (!confirm("Remover contato?")) return;
     const { error } = await supabase.from("contatos").delete().eq("id", id);
-    if (error) return toast.error("Erro", { description: error.message });
+    if (error) { toast.error("Erro", { description: error.message }); return; }
     qc.invalidateQueries({ queryKey: ["contatos", clienteId] });
   }
 
