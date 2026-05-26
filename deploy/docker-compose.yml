@@ -173,6 +173,7 @@ services:
       # - "443:443"   # uncomment when you add HTTPS
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/_proxy.inc:/etc/nginx/conf.d/_proxy.inc:ro
       - ./nginx/certbot/www:/var/www/certbot:ro
       - ./nginx/certbot/conf:/etc/letsencrypt:ro
 
