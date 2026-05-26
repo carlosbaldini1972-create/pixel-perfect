@@ -4,7 +4,7 @@
 # ───────────────────────────────────────────────────────────────────────────
 
 # 1) Builder ----------------------------------------------------------------
-FROM oven/bun:1.1-debian AS builder
+FROM oven/bun:1.2-debian AS builder
 WORKDIR /app
 
 # Install deps first for cache reuse
@@ -24,7 +24,7 @@ ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
 RUN bun run build
 
 # 2) Runtime ---------------------------------------------------------------
-FROM oven/bun:1.1-debian AS runner
+FROM oven/bun:1.2-debian AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
