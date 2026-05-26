@@ -40,6 +40,10 @@ SELECT format('CREATE ROLE supabase_admin LOGIN PASSWORD %L SUPERUSER CREATEDB C
 WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'supabase_admin')
 \gexec
 
+SELECT format('CREATE ROLE postgres LOGIN PASSWORD %L SUPERUSER CREATEDB CREATEROLE REPLICATION BYPASSRLS', :'pgpass')
+WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'postgres')
+\gexec
+
 GRANT anon, authenticated, service_role TO authenticator;
 
 -- Dedicated schemas owned by the respective admin roles, so GoTrue / Storage
