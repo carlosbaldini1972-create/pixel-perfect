@@ -9,7 +9,10 @@ cd "$(dirname "$0")/.."
 
 # Read vars from .env WITHOUT sourcing (avoids shell parse errors on spaces)
 POSTGRES_DB=$(grep -E '^POSTGRES_DB=' .env | head -1 | cut -d= -f2-)
-POSTGRES_DB=${POSTGRES_DB:-postgres}
+# Supabase self-hosted keeps the auth schema in the `postgres` database. Some
+# .env files set POSTGRES_DB for bootstrap/internal use, so force the app
+# migrations to run where auth.users actually exists unless explicitly set.
+POSTGRES_DB=${APP_MIGRATIONS_DB:-postgres}
 POSTGRES_PASSWORD=$(grep -E '^POSTGRES_PASSWORD=' .env | head -1 | cut -d= -f2-)
 
 echo "Waiting for auth.users to exist..."
