@@ -4,7 +4,7 @@
 # ───────────────────────────────────────────────────────────────────────────
 
 # 1) Builder ----------------------------------------------------------------
-FROM oven/bun:1.1-debian AS builder
+FROM oven/bun:1.2-debian AS builder
 WORKDIR /app
 
 # Install deps first for cache reuse
