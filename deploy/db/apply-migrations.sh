@@ -2,22 +2,15 @@
 # Apply app migrations AFTER the stack is up (so GoTrue has created
 # the `auth` schema and `auth.users` table that our migrations FK to).
 #
-# Usage (run on the host, from deploy/):
-#   ./db/apply-migrations.sh
-#
-# Idempotency: each migration uses CREATE ... / CREATE OR REPLACE / etc.
-# Re-running may error on duplicate objects; that's expected.
+# Usage (from deploy/):  ./db/apply-migrations.sh
 
 set -e
-
 cd "$(dirname "$0")/.."
 
-# Load .env so we get POSTGRES_DB / POSTGRES_PASSWORD
-set -a
-. ./.env
-set +a
+# Read vars from .env WITHOUT sourcing (avoids shell parse errors on spaces)
+POSTGRES_DB=$(grep -E '^POSTGRES_DB=' .env | head -1 | cut -d= -f2-)
+POSTGRES_DB=${POSTGRES_DB:-postgres}
 
-# Wait until GoTrue has finished its own migrations (auth.users must exist).
 echo "Waiting for auth.users to exist..."
 for i in $(seq 1 60); do
   if docker compose exec -T postgres psql -U supabase_admin -d "$POSTGRES_DB" -tAc \
